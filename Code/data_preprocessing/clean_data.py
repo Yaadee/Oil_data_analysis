@@ -1,6 +1,12 @@
 import pandas as pd
-df = pd.read_csv("Inputs/data/raw_data/BrentOilPrices.csv")
-data_understanding =df.head(100)
-print(data_understanding)
 
-print("Number of null counts",df.isnull().count())
+import pandas as pd
+
+def clean_data(input_path, output_path):
+    data = pd.read_csv(input_path)
+    data.dropna(inplace=True)
+    data.to_csv(output_path, index=False)
+
+if __name__ == "__main__":
+    clean_data("Inputs/data/raw_data/BrentOilPrices.csv", "Inputs/data/processed_data/cleaned_data.csv")
+
