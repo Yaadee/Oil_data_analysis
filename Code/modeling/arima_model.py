@@ -9,4 +9,4 @@ def arima_model(input_path, output_path):
     data.to_csv(output_path)
 
 if __name__ == "__main__":
-    arima_model("Inputs/data/processed_data/cleaned_brent_prices_data.csv", "Results/arima_results.csv")
+    arima_model("Inputs/data/processed_data/cleaned_brent_prices_data.csv", "Results/arima/arima_results.csv")

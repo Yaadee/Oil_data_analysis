@@ -16,4 +16,4 @@ def exploratory_analysis(input_path):
     print("Number of null counts",data.isnull().count())
 
 if __name__ == "__main__":
-    exploratory_analysis("Inputs/data/processed_data/preprocessed_data.csv")
+    exploratory_analysis("Inputs/data/processed_data/cleaned_brent_prices_data.csv")
