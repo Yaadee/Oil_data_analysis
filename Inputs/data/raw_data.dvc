@@ -1,0 +1,6 @@
+outs:
+- md5: 2e83f7cc54fecbfee7986dc59113feda.dir
+  size: 517194
+  nfiles: 2
+  hash: md5
+  path: raw_data
