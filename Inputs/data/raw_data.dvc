@@ -1,6 +1,6 @@
 outs:
-- md5: 2e83f7cc54fecbfee7986dc59113feda.dir
-  size: 517194
-  nfiles: 2
+- md5: 7eb6144cd7836b8028a7d64d753d2d91.dir
+  size: 479490
+  nfiles: 3
   hash: md5
   path: raw_data
