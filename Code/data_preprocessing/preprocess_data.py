@@ -125,13 +125,14 @@ if __name__ == "__main__":
     preprocess_data("Inputs/data/raw_data/BrentOilPrices.csv", "Inputs/data/processed_data/preprocessed_oil_data.csv")
     preprocess_GDP_data("Inputs/data/raw_data/all_countries_gdp.csv", "Inputs/data/processed_data/preprocessed_gdp_data.csv")
     preprocess_CPIAUCSL_data("Inputs/data/raw_data/inflation_data.csv", "Inputs/data/processed_data/preprocessed_inflation_data.csv")
-
+    
     merge_datasets(
         "Inputs/data/processed_data/preprocessed_oil_data.csv",
         "Inputs/data/processed_data/preprocessed_gdp_data.csv",
         "Inputs/data/processed_data/preprocessed_inflation_data.csv",
         "Inputs/data/processed_data/merged_data.csv"
     )
+
 
 
 

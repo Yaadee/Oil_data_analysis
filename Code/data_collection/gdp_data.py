@@ -5,7 +5,7 @@ from datetime import datetime
 # Function to get GDP data from World Bank for a specific country
 def get_gdp_data(country_code):
     indicators = {'NY.GDP.MKTP.CD': 'GDP'}
-    gdp_data = wbdata.get_dataframe(indicators, country=country_code, date=(datetime(1970, 1, 1), datetime.now()))
+    gdp_data = wbdata.get_dataframe(indicators, country=country_code, date=(datetime(1987, 5, 20), datetime.now()))
     gdp_data.reset_index(inplace=True)
     return gdp_data
 
