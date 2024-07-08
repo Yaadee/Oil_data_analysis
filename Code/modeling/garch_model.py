@@ -1,32 +1,23 @@
-# run_garch_model.py
-
-from arch import arch_model
 import pandas as pd
+from arch import arch_model
 
-def fit_garch_model(data):
-    # Fit GARCH model
-    model = arch_model(data, vol='Garch', p=1, q=1)
-    garch_results = model.fit()
-    return garch_results
+def garch_model(file_path, column, forecast_steps):
+    data = pd.read_csv(file_path, index_col='Date', parse_dates=True)
+    model = arch_model(data[column], vol='Garch', p=1, q=1)
+    model_fit = model.fit()
+    
+    # Forecast variance
+    forecast = model_fit.forecast(horizon=forecast_steps)
+    variance_forecast = forecast.variance.dropna().iloc[-1]
+    
+    # Generate date range for forecast
+    last_date = data.index[-1]
+    forecast_index = pd.date_range(start=last_date, periods=forecast_steps, freq=data.index.freq)
+    variance_forecast.index = forecast_index
+    
+    print(variance_forecast)
+    variance_forecast.to_csv('Results/garch/forecast.csv')
+    print("GARCH model forecasting completed and saved to Results/garch/forecast.csv")
 
-def forecast_garch_model(model_results, horizon=10):
-    # Forecast
-    garch_forecast = model_results.forecast(horizon=horizon)
-    return garch_forecast
-
-def save_to_csv(data, filename):
-    data.to_csv(filename, index=True)
-
-if __name__ == "__main__":
-    # Load cleaned data
-    brent_prices = pd.read_csv("Inputs/data/processed_data/cleaned_brent_prices_data.csv")
-
-    # Fit GARCH model
-    garch_results = fit_garch_model(brent_prices['Price'])
-
-    # Forecast and save results to CSV
-    garch_forecast = forecast_garch_model(garch_results)
-    save_to_csv(garch_forecast.variance, 'Results/garch/garch_forecast_results.csv')
-
-    # Optionally, print the forecasted variance
-    print(garch_forecast.variance[-1:])
+# GARCH Model for Brent Oil Prices
+garch_model('Inputs/data/processed_data/preprocessed_brent_prices_data.csv', 'Price', 10)
