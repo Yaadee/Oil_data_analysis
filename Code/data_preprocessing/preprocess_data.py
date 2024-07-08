@@ -1,146 +1,96 @@
 # import pandas as pd
-# from sklearn.preprocessing import StandardScaler
+# import pandas_datareader.data as web
+# from datetime import datetime
 
-# def preprocess_data(input_path, output_path):
-#     # Read input CSV
-#     data = pd.read_csv(input_path)
-    
-#     # Extract year from 'Date' column and rename it to 'date'
-#     data['date'] = pd.to_datetime(data['Date']).dt.year
-#     data = data.drop('Date', axis=1)
-    
-#     # Save preprocessed data to output CSV (without altering 'Price')
-#     data.to_csv(output_path, index=False)
+# # Function to get data from FRED
+# def get_fred_data(ticker, start_date, end_date):
+#     data = web.DataReader(ticker, 'fred', start_date, end_date)
+#     return data
 
-# def preprocess_GDP_data(input_path, output_path):
-#     # Read input CSV
-#     data = pd.read_csv(input_path)
-    
-#     # Extract year from 'DATE' column and rename it to 'date'
-#     data['date'] = pd.to_datetime(data['date']).dt.year
-#     # Save preprocessed data to output CSV
-#     data.to_csv(output_path, index=False)
+# # Define the date range
+# start_date = '1987-05-20'
+# end_date = datetime.now().strftime('%Y-%m-%d')
 
-# def preprocess_CPIAUCSL_data(input_path, output_path):
-#     # Read input CSV
-#     data = pd.read_csv(input_path)
-    
-#     # Extract year from 'DATE' column and rename it to 'date'
-#     data['date'] = pd.to_datetime(data['DATE']).dt.year
-#     data = data.drop('DATE', axis=1)
-    
-#     # Save preprocessed data to output CSV
-#     data.to_csv(output_path, index=False)
+# # Collect data
+# gdp = get_fred_data('GDP', start_date, end_date)
+# inflation = get_fred_data('CPIAUCSL', start_date, end_date)
+# unemployment = get_fred_data('UNRATE', start_date, end_date)
+# exchange_rate = get_fred_data('DEXUSEU', start_date, end_date)
+# gepu_data = get_fred_data('GEPUCURRENT', start_date, end_date)
+# emv_data = get_fred_data('EMVELECTGOVRN', start_date, end_date)
+# opec_data = get_fred_data('COOTHERZ315', start_date, end_date)
 
-# if __name__ == "__main__":
-#     preprocess_data("Inputs/data/raw_data/BrentOilPrices.csv", "Inputs/data/processed_data/preprocessed_oil_data.csv")
-#     preprocess_GDP_data("Inputs/data/raw_data/all_countries_gdp.csv", "Inputs/data/processed_data/preprocessed_gdp_data.csv")
-#     preprocess_CPIAUCSL_data("Inputs/data/raw_data/inflation_data.csv", "Inputs/data/processed_data/preprocessed_inflation_data.csv")
+# # Save raw data to CSV
+# gdp.to_csv('Inputs/data/raw_data/gdp.csv')
+# inflation.to_csv('Inputs/data/raw_data/inflation.csv')
+# unemployment.to_csv('Inputs/data/raw_data/unemployment.csv')
+# exchange_rate.to_csv('Inputs/data/raw_data/exchange_rate.csv')
+# gepu_data.to_csv('Inputs/data/raw_data/global_economic_policy_uncertainty.csv')
+# emv_data.to_csv('Inputs/data/raw_data/equity_market_volatility.csv')
+# opec_data.to_csv('Inputs/data/raw_data/opec_policies.csv')
 
+# # Load the data and ensure the date column is consistently named 'DATE'
+# brent_oil_prices = pd.read_csv('Inputs/data/raw_data/BrentOilPrices.csv', parse_dates=['Date'])
+# brent_oil_prices.rename(columns={'Date': 'DATE'}, inplace=True)
+# brent_oil_prices.set_index('DATE', inplace=True)
 
+# gdp = pd.read_csv('Inputs/data/raw_data/gdp.csv', parse_dates=['DATE'])
+# gdp.set_index('DATE', inplace=True)
 
-# # import pandas as pd
+# inflation = pd.read_csv('Inputs/data/raw_data/inflation.csv', parse_dates=['DATE'])
+# inflation.set_index('DATE', inplace=True)
 
-# # Load the data
-# brent_data = pd.read_csv('Inputs/data/raw_data/BrentOilPrices.csv', index_col='Date', parse_dates=True)
-# gdp_data_usa = pd.read_csv('Inputs/data/raw_data/all_countries_gdp.csv', index_col='date', parse_dates=True)
-# inflation_data = pd.read_csv('Inputs/data/raw_data/inflation_data.csv', index_col='DATE', parse_dates=True)
+# unemployment = pd.read_csv('Inputs/data/raw_data/unemployment.csv', parse_dates=['DATE'])
+# unemployment.set_index('DATE', inplace=True)
 
+# exchange_rate = pd.read_csv('Inputs/data/raw_data/exchange_rate.csv', parse_dates=['DATE'])
+# exchange_rate.set_index('DATE', inplace=True)
 
-# # Resample the data to annual frequency (optional)
-# brent_data_annual = brent_data.resample('A').mean()
-# gdp_data_usa_annual = gdp_data_usa.resample('A').mean()
-# inflation_data_annual = inflation_data.resample('A').mean()
+# gepu_data = pd.read_csv('Inputs/data/raw_data/global_economic_policy_uncertainty.csv', parse_dates=['DATE'])
+# gepu_data.set_index('DATE', inplace=True)
+
+# emv_data = pd.read_csv('Inputs/data/raw_data/equity_market_volatility.csv', parse_dates=['DATE'])
+# emv_data.set_index('DATE', inplace=True)
+
+# opec_data = pd.read_csv('Inputs/data/raw_data/opec_policies.csv', parse_dates=['DATE'])
+# opec_data.set_index('DATE', inplace=True)
+
+# # Resample the data to annual frequency if necessary
+# brent_oil_prices_annual = brent_oil_prices.resample('A').mean()
+# gdp_annual = gdp.resample('A').mean()
+# inflation_annual = inflation.resample('A').mean()
+# unemployment_annual = unemployment.resample('A').mean()
+# exchange_rate_annual = exchange_rate.resample('A').mean()
+# gepu_annual = gepu_data.resample('A').mean()
+# emv_annual = emv_data.resample('A').mean()
+# opec_annual = opec_data.resample('A').mean()
 
 # # Merge the datasets
-# merged_data = brent_data_annual.merge(gdp_data_usa_annual, left_index=True, right_index=True, how='inner')
-# merged_data = merged_data.merge(inflation_data_annual, left_index=True, right_index=True, how='inner')
+# merged_data = brent_oil_prices_annual.merge(gdp_annual, left_index=True, right_index=True, how='inner')
+# merged_data = merged_data.merge(inflation_annual, left_index=True, right_index=True, how='inner')
+# merged_data = merged_data.merge(unemployment_annual, left_index=True, right_index=True, how='inner')
+# merged_data = merged_data.merge(exchange_rate_annual, left_index=True, right_index=True, how='inner')
+# merged_data = merged_data.merge(gepu_annual, left_index=True, right_index=True, how='inner')
+# merged_data = merged_data.merge(emv_annual, left_index=True, right_index=True, how='inner')
+# merged_data = merged_data.merge(opec_annual, left_index=True, right_index=True, how='inner')
+
+# # Add an empty 'Date' column
+# merged_data['Date'] = ''
 
 # # Save the merged data to CSV
 # merged_data.to_csv('Inputs/data/processed_data/merged_data.csv')
 
+# print("Data merged, 'Date' column added, and saved.")
 
-# import pandas as pd
-
-# def preprocess_data(input_path, output_path):
-#     # Read input CSV
-#     data = pd.read_csv(input_path)
-    
-#     # Extract year from 'Date' column and rename it to 'date'
-#     data['date'] = pd.to_datetime(data['Date']).dt.year
-#     data = data.drop('Date', axis=1)
-    
-#     # Save preprocessed data to output CSV (without altering 'Price')
-#     data.to_csv(output_path, index=False)
-
-# def preprocess_GDP_data(input_path, output_path):
-#     # Read input CSV
-#     data = pd.read_csv(input_path)
-    
-#     # Extract year from 'date' column and rename it to 'date'
-#     data['date'] = pd.to_datetime(data['date']).dt.year
-    
-#     # Save preprocessed data to output CSV
-#     data.to_csv(output_path, index=False)
-
-# def preprocess_CPIAUCSL_data(input_path, output_path):
-#     # Read input CSV
-#     data = pd.read_csv(input_path)
-    
-#     # Extract year from 'DATE' column and rename it to 'date'
-#     data['date'] = pd.to_datetime(data['DATE']).dt.year
-#     data = data.drop('DATE', axis=1)
-    
-#     # Save preprocessed data to output CSV
-#     data.to_csv(output_path, index=False)
-
-# def merge_datasets(brent_path, gdp_path, inflation_path, output_path):
-#     # Load the preprocessed data
-#     brent_data = pd.read_csv(brent_path)
-#     gdp_data = pd.read_csv(gdp_path)
-#     inflation_data = pd.read_csv(inflation_path)
-    
-#     # Set 'date' as the index and ensure it's datetime
-#     brent_data['date'] = pd.to_datetime(brent_data['date'], format='%Y')
-#     gdp_data['date'] = pd.to_datetime(gdp_data['date'], format='%Y')
-#     inflation_data['date'] = pd.to_datetime(inflation_data['date'], format='%Y')
-
-#     brent_data.set_index('date', inplace=True)
-#     gdp_data.set_index('date', inplace=True)
-#     inflation_data.set_index('date', inplace=True)
-    
-#     # Resample the data to annual frequency
-#     brent_data_annual = brent_data.resample('A').mean()
-#     gdp_data_annual = gdp_data.resample('A').mean()
-#     inflation_data_annual = inflation_data.resample('A').mean()
-    
-#     # Merge the datasets
-#     merged_data = brent_data_annual.merge(gdp_data_annual, left_index=True, right_index=True, how='inner')
-#     merged_data = merged_data.merge(inflation_data_annual, left_index=True, right_index=True, how='inner')
-    
-#     # Save the merged data to CSV
-#     merged_data.to_csv(output_path)
-
-# if __name__ == "__main__":
-#     preprocess_data("Inputs/data/raw_data/BrentOilPrices.csv", "Inputs/data/processed_data/preprocessed_oil_data.csv")
-#     preprocess_GDP_data("Inputs/data/raw_data/all_countries_gdp.csv", "Inputs/data/processed_data/preprocessed_gdp_data.csv")
-#     preprocess_CPIAUCSL_data("Inputs/data/raw_data/inflation_data.csv", "Inputs/data/processed_data/preprocessed_inflation_data.csv")
-    
-#     merge_datasets(
-#         "Inputs/data/processed_data/preprocessed_oil_data.csv",
-#         "Inputs/data/processed_data/preprocessed_gdp_data.csv",
-#         "Inputs/data/processed_data/preprocessed_inflation_data.csv",
-#         "Inputs/data/processed_data/merged_data.csv"
-#     )
+# # Calculate correlations
+# correlations = merged_data[['Price', 'GDP', 'CPIAUCSL', 'UNRATE', 'DEXUSEU', 'GEPUCURRENT', 'EMVELECTGOVRN', 'COOTHERZ315']].corr()
 
 
 
-
-
-
-
-
-
+# print("Correlation Matrix:")
+# print(correlations)
+# print("\nMerged Data Sample:")
+# print(merged_data.head(10))
 
 
 
@@ -148,21 +98,37 @@
 import pandas as pd
 
 # Load the data and ensure the date column is consistently named 'DATE'
-brent_oil_prices = pd.read_csv('Inputs/data/raw_data/brent_oil_prices.csv', parse_dates=['Date'])
-brent_oil_prices.rename(columns={'Date': 'DATE'}, inplace=True)
-brent_oil_prices.set_index('DATE', inplace=True)
+brent_oil_prices = pd.read_csv('Inputs/data/raw_data/BrentOilPrices.csv', parse_dates=['Date'])
+brent_oil_prices.rename(columns={'Date': 'Date','Price':'OilPrice'}, inplace=True)
+brent_oil_prices.set_index('Date', inplace=True)
 
 gdp = pd.read_csv('Inputs/data/raw_data/gdp.csv', parse_dates=['DATE'])
-gdp.set_index('DATE', inplace=True)
+gdp.rename(columns={'DATE': 'Date', 'GDP': 'GDP'}, inplace=True)
+gdp.set_index('Date', inplace=True)
 
 inflation = pd.read_csv('Inputs/data/raw_data/inflation.csv', parse_dates=['DATE'])
-inflation.set_index('DATE', inplace=True)
+inflation.rename(columns={'DATE': 'Date', 'CPIAUCSL': 'Inflation'}, inplace=True)
+inflation.set_index('Date', inplace=True)
 
 unemployment = pd.read_csv('Inputs/data/raw_data/unemployment.csv', parse_dates=['DATE'])
-unemployment.set_index('DATE', inplace=True)
+unemployment.rename(columns={'DATE': 'Date', 'UNRATE': 'Unemployment'}, inplace=True)
+unemployment.set_index('Date', inplace=True)
 
 exchange_rate = pd.read_csv('Inputs/data/raw_data/exchange_rate.csv', parse_dates=['DATE'])
-exchange_rate.set_index('DATE', inplace=True)
+exchange_rate.rename(columns={'DATE': 'Date', 'DEXUSEU': 'ExchangeRate'}, inplace=True)
+exchange_rate.set_index('Date', inplace=True)
+
+gepu_data = pd.read_csv('Inputs/data/raw_data/global_economic_policy_uncertainty.csv', parse_dates=['DATE'])
+gepu_data.rename(columns={'DATE': 'Date', 'GEPUCURRENT': 'GlobalEconomicPolicy'}, inplace=True)
+gepu_data.set_index('Date', inplace=True)
+
+emv_data = pd.read_csv('Inputs/data/raw_data/equity_market_volatility.csv', parse_dates=['DATE'])
+emv_data.rename(columns={'DATE': 'Date', 'EMVELECTGOVRN': 'equity_market_volatility'}, inplace=True)
+emv_data.set_index('Date', inplace=True)
+
+opec_data = pd.read_csv('Inputs/data/raw_data/opec_policies.csv', parse_dates=['DATE'])
+opec_data.rename(columns={'DATE': 'Date', 'COOTHERZ315': 'opec_policies'}, inplace=True)
+opec_data.set_index('Date', inplace=True)
 
 # Resample the data to annual frequency if necessary
 brent_oil_prices_annual = brent_oil_prices.resample('A').mean()
@@ -170,12 +136,20 @@ gdp_annual = gdp.resample('A').mean()
 inflation_annual = inflation.resample('A').mean()
 unemployment_annual = unemployment.resample('A').mean()
 exchange_rate_annual = exchange_rate.resample('A').mean()
+gepu_annual = gepu_data.resample('A').mean()
+emv_annual = emv_data.resample('A').mean()
+opec_annual = opec_data.resample('A').mean()
 
 # Merge the datasets
 merged_data = brent_oil_prices_annual.merge(gdp_annual, left_index=True, right_index=True, how='inner')
 merged_data = merged_data.merge(inflation_annual, left_index=True, right_index=True, how='inner')
 merged_data = merged_data.merge(unemployment_annual, left_index=True, right_index=True, how='inner')
 merged_data = merged_data.merge(exchange_rate_annual, left_index=True, right_index=True, how='inner')
+merged_data = merged_data.merge(gepu_annual, left_index=True, right_index=True, how='inner')
+merged_data = merged_data.merge(emv_annual, left_index=True, right_index=True, how='inner')
+merged_data = merged_data.merge(opec_annual, left_index=True, right_index=True, how='inner')
 
 # Save the merged data to CSV
 merged_data.to_csv('Inputs/data/processed_data/merged_data.csv')
+
+print("Data preprocessing completed, merged data saved to CSV.")
