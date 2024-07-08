@@ -8,7 +8,7 @@ def get_fred_data(ticker, start_date, end_date):
     return data
 
 # Define the date range
-start_date = '1988-01-01'
+start_date = '1987-05-20'
 end_date = datetime.now().strftime('%Y-%m-%d')
 
 # Collect data

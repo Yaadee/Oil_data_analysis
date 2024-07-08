@@ -17,3 +17,26 @@ def exploratory_analysis(input_path):
 
 if __name__ == "__main__":
     exploratory_analysis("Inputs/data/processed_data/cleaned_brent_prices_data.csv")
+
+
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the merged data
+data = pd.read_csv('Inputs/data/processed_data/merged_data.csv', index_col='DATE', parse_dates=True)
+
+# Plot the data
+plt.figure(figsize=(14, 7))
+sns.lineplot(data=data)
+plt.title('Brent Oil Prices and Economic Indicators')
+plt.ylabel('Values')
+plt.xlabel('Year')
+plt.show()
+
+# Correlation heatmap
+plt.figure(figsize=(10, 6))
+sns.heatmap(data.corr(), annot=True, cmap='coolwarm')
+plt.title('Correlation Heatmap')
+plt.show()
