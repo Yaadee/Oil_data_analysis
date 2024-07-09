@@ -20,4 +20,57 @@ Refer to the project structure outlined in the initial overview.
 8. Run the GARCH model: `python modeling/garch_model.py`.
 9. Plot the forecast results: `python visualization/plot_results.py`.
 10. Generate insights: `python visualization/insights.py`.
- 
+
+
+.
+├── Code
+│   ├── analysis
+│   ├── data_collection
+│   ├── data_preprocessing
+│   ├── modeling
+│   └── visualization
+├── Inputs
+│   └── data
+├── Metadata
+│   ├── project_description.md
+│   └── README.md
+├── Notebook
+│   ├── arima_model.ipynb
+│   ├── data_preprocessing.ipynb
+│   ├── EDA.ipynb
+│   ├── exploratory_analysis.ipynb
+│   └── garch_model.ipynb
+├── README.md
+├── requirements.txt
+├── Results
+│   ├── arima
+│   ├── bocpd
+│   ├── bsts
+│   ├── extended_model
+│   ├── garch
+│   ├── model_validation
+│   ├── ms_arima
+│   ├── rulsif
+│   └── var
+└── Scripts
+    ├── run_all.sh
+    └── setup_env.sh
+
+
+    workflow 
+    
+    +-------------------+        +-------------------+        +-------------------+
+|    Data           |        |    Data           |        |    Exploratory    |
+|    Collection     +------->|    Preprocessing  +------->|    Data Analysis  |
++-------------------+        +-------------------+        +-------------------+
+         |                           |                           |
+         v                           v                           v
++-------------------+        +-------------------+        +-------------------+
+|  Model Building   |        |  Factor Analysis  |        |  Model Validation |
++-------------------+        +-------------------+        +-------------------+
+         |                           |                           |
+         v                           v                           v
++-------------------+        +-------------------+        +-------------------+
+|  Adapt Model to   |        |  Extend Model with|        |  Generate         |
+|  New Scenarios    +------->|  New Variables    +------->|  Insights         |
++-------------------+        +-------------------+        +-------------------+
