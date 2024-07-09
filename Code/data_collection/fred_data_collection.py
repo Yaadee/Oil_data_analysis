@@ -12,7 +12,6 @@ start_date = '1970-05-20'
 end_date = datetime.now().strftime('%Y-%m-%d')
 
 # Collect data
-# brent_oil_prices = web.DataReader('DCOILBRENTEU', 'fred', start_date, end_date)
 gdp = get_fred_data('GDP', start_date, end_date)
 inflation = get_fred_data('CPIAUCSL', start_date, end_date)
 unemployment = get_fred_data('UNRATE', start_date, end_date)
@@ -22,7 +21,6 @@ emv_data = get_fred_data('EMVELECTGOVRN', start_date, end_date)
 opec_data = get_fred_data('COOTHERZ315', start_date, end_date)
 
 # Save raw data to CSV
-#brent_oil_prices.to_csv('Inputs/data/raw_data/BrentOilPrices.csv')
 gdp.to_csv('Inputs/data/raw_data/gdp.csv')
 inflation.to_csv('Inputs/data/raw_data/inflation.csv')
 unemployment.to_csv('Inputs/data/raw_data/unemployment.csv')
@@ -30,5 +28,4 @@ exchange_rate.to_csv('Inputs/data/raw_data/exchange_rate.csv')
 gepu_data.to_csv('Inputs/data/raw_data/global_economic_policy_uncertainty.csv')
 emv_data.to_csv('Inputs/data/raw_data/equity_market_volatility.csv')
 opec_data.to_csv('Inputs/data/raw_data/opec_policies.csv')
-
 print("Data collection completed and saved to CSV.")
