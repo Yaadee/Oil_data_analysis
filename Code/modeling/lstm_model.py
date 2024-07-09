@@ -6,8 +6,8 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
 
 # Load the preprocessed Brent oil prices data
-data = pd.read_csv('Inputs/data/processed_data/preprocessed_brent_prices_data.csv', index_col='DATE', parse_dates=True)
-prices = data['DCOILBRENTEU'].values.reshape(-1, 1)
+data = pd.read_csv('Inputs/data/processed_data/preprocessed_brent_prices_data.csv', index_col='Date', parse_dates=True)
+prices = data['Price'].values.reshape(-1, 1)
 
 # Normalize the data
 scaler = MinMaxScaler(feature_range=(0, 1))
@@ -57,7 +57,7 @@ test_predict = scaler.inverse_transform(test_predict)
 plt.figure(figsize=(10, 6))
 plt.plot(data.index, scaler.inverse_transform(scaled_prices), label='Original Data')
 plt.plot(data.index[time_step:time_step + len(train_predict)], train_predict, label='Train Prediction')
-plt.plot(data.index[time_step + len(train_predict) + 1:len(data) - 1], test_predict, label='Test Prediction')
+plt.plot(data.index[time_step + len(train_predict) + 1:time_step + len(train_predict) + 1 + len(test_predict)], test_predict, label='Test Prediction')
 plt.title('LSTM Model Forecast')
 plt.xlabel('Date')
 plt.ylabel('Brent Oil Price (USD per Barrel)')
@@ -68,7 +68,7 @@ plt.show()
 
 # Save the predictions to CSV
 train_predict_df = pd.DataFrame(train_predict, index=data.index[time_step:time_step + len(train_predict)], columns=['Train_Prediction'])
-test_predict_df = pd.DataFrame(test_predict, index=data.index[time_step + len(train_predict) + 1:len(data) - 1], columns=['Test_Prediction'])
+test_predict_df = pd.DataFrame(test_predict, index=data.index[time_step + len(train_predict) + 1:time_step + len(train_predict) + 1 + len(test_predict)], columns=['Test_Prediction'])
 train_predict_df.to_csv('Results/lstm/train_predictions.csv')
 test_predict_df.to_csv('Results/lstm/test_predictions.csv')
 print("LSTM model forecasting completed and saved to Results/lstm")
